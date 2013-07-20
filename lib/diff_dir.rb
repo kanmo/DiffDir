@@ -2,6 +2,8 @@ require 'find'
 require 'digest/md5'
 require 'pry-debugger'
 
+Encoding.default_external = 'UTF-8'
+
 module DiffDir
   class Directory
     attr_reader :name, :files
@@ -60,7 +62,7 @@ module DiffDir
 
       unless diff.empty?
         diff.each do |line|
-          if line =~ /^@version/ then diff.delete(line) end
+          if line =~ /@version/ then diff.delete(line) end
         end
       end
 
