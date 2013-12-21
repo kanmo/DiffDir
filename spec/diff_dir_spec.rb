@@ -95,19 +95,19 @@ describe DiffDir::Directory do
     context 'ファイルの中身に両方異なる行がある場合' do
       before do
         mkfile("a/f1", "test\ngit\n")
-        mkfile("a/f2", "test\nsuvbersion\n")
+        mkfile("a/f2", "test\nsubversion\n")
       end
       subject { DiffDir.filecmp("a/f1", "a/f2") }
-      it { should eq ["git\n"] }
+      it { should eq ["git\n", "subversion\n"] }
     end
 
     context 'ファイルの中身の片方に異なる行がある場合' do
       before do
         mkfile("a/f1", "test\n")
-        mkfile("a/f2", "test\nsuvbersion\n")
+        mkfile("a/f2", "test\nsubversion\n")
       end
       subject { DiffDir.filecmp("a/f1", "a/f2") }
-      it { should eq ["suvbersion\n"] }
+      it { should eq ["subversion\n"] }
     end
 
     context 'ファイルの中身の片方の異なる行が@versionで始まる場合' do
@@ -125,7 +125,7 @@ describe DiffDir::Directory do
         mkfile("a/f2", "test\nsubversion\n")
       end
       subject { DiffDir.filecmp("a/f1", "a/f2") }
-      it { should eq ["test:@version=1.1.0\n"] }
+      it { should eq [] }
     end
 
   end

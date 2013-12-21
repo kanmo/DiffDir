@@ -55,18 +55,11 @@ module DiffDir
     end
 
     def filecmp(fileA, fileB)
-      linesA = File.readlines(fileA)
-      linesB = File.readlines(fileB)
-      diff = (linesA - linesB)
-      diff = (linesB - linesA) if diff == []
+      diff = []
+      linesA, linesB = File.readlines(fileA), File.readlines(fileB)
+      diff = (linesA - linesB) + (linesB - linesA)
 
-      unless diff.empty?
-        diff.each do |line|
-          if line =~ /@version/ then diff.delete(line) end
-        end
-      end
-
-      diff
+      diff.delete_if { |line| line[/@version/, 0] }
     end
 
     def listup(arr)
@@ -103,13 +96,6 @@ EOF
         end
       end
     end
-
-    # def is_samefile_md5?(parent_dirA, parent_dirB, file)
-    #   fileA = parent_dirA.name + '/' + file
-    #   fileB = parent_dirB.name + '/' + file
-
-    #   File.size(fileA) == File.size(fileB) && md5cmp(fileA, fileB)
-    # end
 
     def is_samefile?(parent_dirA, parent_dirB, file)
       fileA = parent_dirA.name + '/' + file
